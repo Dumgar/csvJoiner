@@ -2,9 +2,6 @@ package org.dumgar.csvJoiner;
 
 import java.io.*;
 
-/**
- * Created by romandmitriev on 19.02.16.
- */
 public class JoinerFor implements Joiner{
 
     @Override
