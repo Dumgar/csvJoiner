@@ -1,4 +1,6 @@
-package org.dumgar.csvJoiner;
+package org.dumgar.csvJoiner.joinerSQL;
+import org.dumgar.csvJoiner.Joiner;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

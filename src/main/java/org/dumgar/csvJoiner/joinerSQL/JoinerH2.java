@@ -1,4 +1,4 @@
-package org.dumgar.csvJoiner;
+package org.dumgar.csvJoiner.joinerSQL;
 import org.h2.tools.Csv;
 import org.h2.tools.DeleteDbFiles;
 import java.sql.*;
