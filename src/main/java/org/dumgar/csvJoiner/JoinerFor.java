@@ -15,11 +15,7 @@ public class JoinerFor implements Joiner{
         String line1;
         String line2;
         String cvsSplitBy = ",";
-        int key1;
-        String value1;
-        int key2;
-        String value2;
-
+        String temp;
 
         try {
             br1 = new BufferedReader(new FileReader(filename1));
@@ -27,19 +23,17 @@ public class JoinerFor implements Joiner{
             while ((line1 = br1.readLine()) != null) {
 
                 String[] both1 = line1.split(cvsSplitBy);
-                key1 = Integer.parseInt(both1[0]);
-                value1 = both1[1];
 
                 br2 = new BufferedReader(new FileReader(filename2));
                 while ((line2 = br2.readLine()) != null) {
 
                     String[] both2 = line2.split(cvsSplitBy);
-                    key2 = Integer.parseInt(both2[0]);
-                    value2 = both2[1];
 
-                    if (key1 == key2 ) {
+                    if (Integer.parseInt(both1[0]) == Integer.parseInt(both2[0]) ) {
 
-                        out.write(key1 + "," + value1 + "," + value2 + "\n");
+                        temp = String.format("%09d", Integer.parseInt(both1[0]));
+
+                        out.write(temp + "," + both1[1] + "," + both2[1] + "\n");
 
                     }
 
