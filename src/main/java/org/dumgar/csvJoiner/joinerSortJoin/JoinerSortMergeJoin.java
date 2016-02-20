@@ -39,7 +39,7 @@ public class JoinerSortMergeJoin implements Joiner {
                     elem1 = new Item(iterator1.next());
                 }
                 if (elem1.key == elem2.key) {
-                    out.write(String.format("%09d,%s,%s\n", elem1.key, elem1.value, elem2.value));
+                    out.write(format(elem1.key, elem1.value, elem2.value));
                     if (iterator2.hasNext()){
                         elem2 = new Item(iterator2.next());
                     } else break;
@@ -48,7 +48,7 @@ public class JoinerSortMergeJoin implements Joiner {
                     elem2 = new Item(iterator2.next());
                 }
                 if (elem1.key == elem2.key) {
-                    out.write(String.format("%09d,%s,%s\n", elem1.key, elem1.value, elem2.value));
+                    out.write(format(elem1.key, elem1.value, elem2.value));
                     if (iterator2.hasNext()){
                         elem2 = new Item(iterator2.next());
                     } else break;
@@ -77,6 +77,8 @@ public class JoinerSortMergeJoin implements Joiner {
             this.value = elem.split(",")[1];
         }
 
-
+    }
+    private String format(Integer key, String value1, String value2) {
+        return String.format("%09d,%s,%s\n", key, value1, value2);
     }
 }
