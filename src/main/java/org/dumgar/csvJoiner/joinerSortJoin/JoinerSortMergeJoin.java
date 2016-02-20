@@ -25,35 +25,36 @@ public class JoinerSortMergeJoin implements Joiner {
             ExternalSort<String> sort2 = new ExternalSort<>(iter2);
 
 
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(result), "UTF-8"));
+            PrintWriter out = new PrintWriter(new File(result), "UTF-8");
 
             Iterator<String> iterator1 = sort1.iterator();
             Iterator<String> iterator2 = sort2.iterator();
 
-            String[] elem1 = iterator1.next().split(",");
-            String[] elem2 = iterator2.next().split(",");
+
+            Item elem1 = new Item(iterator1.next());
+            Item elem2 = new Item(iterator2.next());
 
             x:
             while (iterator1.hasNext() || iterator2.hasNext()) {
-                while (Integer.parseInt(elem1[0]) < Integer.parseInt(elem2[0])) {
-                    elem1 = iterator1.next().split(",");
+                while (elem1.key < elem2.key) {
+                    elem1 = new Item(iterator1.next());
                 }
 
-                while (Integer.parseInt(elem1[0]) == Integer.parseInt(elem2[0])) {
-                    out.write(String.format("%09d", Integer.parseInt(elem1[0])) + "," + elem1[1] + "," + elem2[1] + "\n");
+                while (elem1.key == elem2.key) {
+                    out.write(String.format("%09d,%s,%s\n", elem1.key, elem1.value, elem2.value));
                     if (iterator2.hasNext()) {
-                        elem2 = iterator2.next().split(",");
+                        elem2 = new Item(iterator2.next());
                     } else break x;
-                    if (Integer.parseInt(elem1[0]) == Integer.parseInt(elem2[0]) && !iterator2.hasNext()) break;
+                    if (elem1.key == elem2.key && !iterator2.hasNext()) break;
 
                 }
-                while (Integer.parseInt(elem1[0]) > Integer.parseInt(elem2[0])) {
+                while (elem1.key > elem2.key) {
                     if (iterator2.hasNext()) {
-                        elem2 = iterator2.next().split(",");
+                        elem2 = new Item(iterator2.next());
                     } else break;
                 }
                 if (!iterator1.hasNext() && !iterator2.hasNext()) {
-                    if (Integer.parseInt(elem1[0]) == Integer.parseInt(elem2[0])) out.write(String.format("%09d", Integer.parseInt(elem1[0])) + "," + elem1[1] + "," + elem2[1] + "\n");
+                    if (elem1.key == elem2.key) out.write(String.format("%09d,%s,%s\n", elem1.key, elem1.value, elem2.value));
                     break;
                 }
             }
