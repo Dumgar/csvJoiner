@@ -34,29 +34,26 @@ public class JoinerSortMergeJoin implements Joiner {
             Item elem1 = new Item(iterator1.next());
             Item elem2 = new Item(iterator2.next());
 
-            x:
             while (iterator1.hasNext() || iterator2.hasNext()) {
-                while (elem1.key < elem2.key) {
+                if (elem1.key < elem2.key && iterator1.hasNext()) {
                     elem1 = new Item(iterator1.next());
                 }
-
-                while (elem1.key == elem2.key) {
+                if (elem1.key == elem2.key) {
                     out.write(String.format("%09d,%s,%s\n", elem1.key, elem1.value, elem2.value));
-                    if (iterator2.hasNext()) {
-                        elem2 = new Item(iterator2.next());
-                    } else break x;
-                    if (elem1.key == elem2.key && !iterator2.hasNext()) break;
-
-                }
-                while (elem1.key > elem2.key) {
-                    if (iterator2.hasNext()) {
+                    if (iterator2.hasNext()){
                         elem2 = new Item(iterator2.next());
                     } else break;
                 }
-                if (!iterator1.hasNext() && !iterator2.hasNext()) {
-                    if (elem1.key == elem2.key) out.write(String.format("%09d,%s,%s\n", elem1.key, elem1.value, elem2.value));
-                    break;
+                if (elem1.key > elem2.key && iterator2.hasNext()) {
+                    elem2 = new Item(iterator2.next());
                 }
+                if (elem1.key == elem2.key) {
+                    out.write(String.format("%09d,%s,%s\n", elem1.key, elem1.value, elem2.value));
+                    if (iterator2.hasNext()){
+                        elem2 = new Item(iterator2.next());
+                    } else break;
+                }
+
             }
 
 
@@ -65,6 +62,19 @@ public class JoinerSortMergeJoin implements Joiner {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+
+    }
+
+    private class Item {
+
+        Integer key;
+        String value;
+
+        public Item(String elem) {
+            this.key = Integer.parseInt(elem.split(",")[0]);
+            this.value = elem.split(",")[1];
         }
 
 
